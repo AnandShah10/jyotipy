@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "jyotipy"
 version = "0.1.0"
 description = "Pure-Python Vedic (Jyotish) astrology library — sidereal charts, dashas, vargas, and yogas, with no C extensions."
-readme = "README.md"
+readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.8"
 license = { text = "MIT" }
 authors = [{ name = "Anand Shah" }]
@@ -35,6 +35,7 @@ dev = ["pytest"]
 [project.urls]
 Homepage = "https://github.com/AnandShah10/jyotipy"
 Issues = "https://github.com/AnandShah10/jyotipy/issues"
+Documentation = "https://jyotipy.readthedocs.io"
 
 [tool.setuptools.packages.find]
 include = ["jyotipy*"]

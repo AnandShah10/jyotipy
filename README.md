@@ -1,29 +1,33 @@
 # JyotiPy
 
-A pure-Python Vedic (Jyotish) astrology library. No C extensions, no
-ephemeris kernel downloads, works on Python 3.8 through 3.14.
+[![PyPI version](https://img.shields.io/pypi/v/jyotipy.svg?logo=pypi)](https://pypi.org/project/jyotipy/)
+[![Python versions](https://img.shields.io/pypi/pyversions/jyotipy.svg?logo=python)](https://pypi.org/project/jyotipy/)
+[![Documentation Status](https://readthedocs.org/projects/jyotipy/badge/?version=latest)](https://jyotipy.readthedocs.io/en/latest/?badge=latest)
+[![License: MIT](https://img.shields.io/github/license/AnandShah10/jyotipy.svg)](https://github.com/AnandShah10/jyotipy/blob/master/LICENSE)
 
-Built as an alternative to `pyswisseph` for two reasons: pyswisseph's
-AGPL license is a blocker for closed/commercial use, and `pip install`
-frequently breaks on newer Python versions since it needs to compile a C
-extension against a specific interpreter ABI. JyotiPy has neither
-problem — planetary positions come from
-[`PyMeeus`](https://pypi.org/project/PyMeeus/) (VSOP87 + ELP2000-82,
-pure Python), and everything else is plain Python arithmetic.
+Pure-Python Vedic (Jyotish) astrology library. Computes sidereal planetary positions, ascendant, houses, vargas, dashas, panchanga, and a conservative set of yogas with zero C extensions or external ephemeris files.
 
-## Install
+Built as a permissive-license alternative to `pyswisseph`. All computations use [`PyMeeus`](https://pypi.org/project/PyMeeus/) for planetary positions (VSOP87 + ELP2000-82) followed by pure-Python ayanamsa, house, and yoga logic. Supports Python 3.8+.
+
+## Installation
 
 ```bash
-pip install jyotipy   # not published yet -- see "Publishing" below
-# or, from source:
+pip install jyotipy
+```
+
+Or install from source:
+
+```bash
+git clone https://github.com/AnandShah10/jyotipy.git
+cd jyotipy
 pip install -e .
 ```
 
-## Quick start
+## Quick Start
 
 ```python
 from datetime import datetime
-from jyotipy import BirthChart
+from jyotipy.chart import BirthChart
 
 chart = BirthChart(
     dt=datetime(1990, 6, 15, 14, 32),
@@ -40,24 +44,22 @@ print(chart.yogas())
 print(chart.panchanga())
 ```
 
-## What's implemented (v0.1)
+## Features
 
-| Area | Status |
-|---|---|
-| Tropical planetary positions (Sun, Moon, Mercury-Saturn) | Done, via PyMeeus |
-| Rahu/Ketu (mean node default, true node optional) | Done |
-| Ayanamsa: Lahiri, True Chitrapaksha, KP-Newcomb, Raman | Done (see accuracy notes) |
-| Ascendant / Midheaven | Done |
-| Houses: Whole Sign, Equal, Porphyry | Done |
-| Nakshatra + Pada | Done |
-| Divisional charts: D1, D2, D3, D4, D7, D9, D10, D12 | Done |
-| Divisional charts: D16, D20, D24, D27, D30, D40, D45, D60 | **Not implemented** — raises `NotImplementedError`, see below |
-| Vimshottari Mahadasha + Antardasha | Done |
-| Yogas: Pancha Mahapurusha, Gajakesari, Budhaditya, Chandra-Mangal, Sunapha/Anapha/Durudhara, Kemadruma (simplified), Neechabhanga (simplified, primary rule only) | Done, deliberately conservative set |
-| Panchanga: Tithi, Vara, Nakshatra, Nitya Yoga, Karana | Done |
-| Placidus / true Sripati houses | **Not implemented** |
+- **Planetary positions**: Sun–Saturn + Rahu/Ketu (mean node default; true node optional) using PyMeeus (VSOP87/ELP2000)
+- **Ayanamsa**: Lahiri (default), True Chitrapaksha, KP-Newcomb, Raman
+- **Lagna & Houses**: Whole-sign, Equal, Porphyry (Placidus and Sripati planned)
+- **Nakshatras**: With pada and full support
+- **Divisional charts (Vargas)**: D1–D12 fully implemented using standard rules; D16+ raise `NotImplementedError` (see Accuracy Notes)
+- **Dashas**: Vimshottari Mahadasha and Antardasha
+- **Yogas**: Deliberately conservative core set (see `jyotipy.yogas` for details):
+  - Pancha Mahapurusha (Ruchaka, Bhadra, Hamsa, Malavya, Sasa)
+  - Gajakesari, Budhaditya (Sun-Mercury), Chandra-Mangal (Moon-Mars)
+  - Sunapha, Anapha, Durudhara, Kemadruma (raw), Neechabhanga candidates
+  - *Note*: Many classical cancellation rules and variant definitions are not auto-applied; results are candidates for further analysis.
+- **Panchanga**: Tithi, Vara, Nakshatra, Nitya Yoga, Karana
 
-## Accuracy notes — read this before using it for real work
+## Accuracy Notes
 
 - **Planetary positions**: PyMeeus implements full VSOP87 (planets) and
   ELP2000-82 (Moon), validated in this project against Meeus's own
@@ -89,32 +91,20 @@ print(chart.panchanga())
 
 ## Roadmap
 
-1. D16-D60 divisional charts (needs primary-source verification, not
-   guesswork)
-2. Iterative Placidus / true Sripati house systems
-3. Ashtakavarga
-4. Transit (Gochara) analysis
-5. Shadbala (planetary strength)
-6. Optional high-precision backend (JPL DE440 via `skyfield`) for anyone
-   who wants sub-arcsecond agreement with Swiss Ephemeris and doesn't
-   mind the kernel download
+- D16–D60 divisional charts (requires careful primary-source verification)
+- Placidus and true Sripati house systems
+- Ashtakavarga
+- Gochara (transit) analysis
+- Shadbala (planetary strength calculations)
+- Optional high-precision backend using JPL DE440 via `skyfield`
 
 ## License
 
-MIT. Depends on `PyMeeus` (LGPLv3) as an unmodified runtime dependency —
-this doesn't affect JyotiPy's own license, but if you vendor/fork PyMeeus
-itself rather than depending on it normally, LGPL terms apply to that
-fork.
+[MIT License](https://github.com/AnandShah10/jyotipy/blob/master/LICENSE) (see the `LICENSE` file in the GitHub repository).
 
-## Publishing
+JyotiPy depends on [`PyMeeus`](https://pypi.org/project/PyMeeus/) (LGPLv3) as an unmodified runtime dependency. This does not change JyotiPy's own MIT license, but if you vendor or fork PyMeeus itself, the LGPL terms apply to that portion.
 
-Not yet published to PyPI. To publish:
+**Full documentation**: [https://jyotipy.readthedocs.io](https://jyotipy.readthedocs.io)
 
-```bash
-pip install build twine
-python -m build
-twine upload dist/*
-```
-
-Bump `version` in `pyproject.toml` first, and fix the placeholder GitHub
-URLs.
+Source code, examples, and issue reports are at the
+[GitHub repository](https://github.com/AnandShah10/jyotipy).

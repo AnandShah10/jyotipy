@@ -4,7 +4,7 @@ from a birth datetime + location, and exposes everything else in the
 package (nakshatras, houses, vargas, dashas, yogas, panchanga) as methods
 so a typical usage looks like:
 
-    from jyotipy import BirthChart
+    from jyotipy.chart import BirthChart
     from datetime import datetime
 
     chart = BirthChart(

@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jyotipy"
+version = "0.1.0"
+description = "Pure-Python Vedic (Jyotish) astrology library — sidereal charts, dashas, vargas, and yogas, with no C extensions."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [{ name = "Anand Shah" }]
+keywords = ["vedic astrology", "jyotish", "astrology", "ephemeris", "vimshottari", "panchanga"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Scientific/Engineering :: Astronomy",
+]
+dependencies = [
+    "PyMeeus>=0.5.12",
+]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[project.urls]
+Homepage = "https://github.com/AnandShah10/jyotipy"
+Issues = "https://github.com/AnandShah10/jyotipy/issues"
+
+[tool.setuptools.packages.find]
+include = ["jyotipy*"]

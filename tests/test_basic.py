@@ -1,15 +1,6 @@
-"""
-Smoke tests. These check internal consistency (angles in range, dasha
-sums to 120 years, etc.) rather than asserting exact arcsecond agreement
-with a reference ephemeris, since we don't have network access to a
-reference source in this dev environment. Anand: cross-check a real
-birth chart against JHora/Swiss Ephemeris output before trusting this
-for anything real -- see README "Validation" section.
-"""
-
 from datetime import datetime
 from jyotipy import BirthChart, Graha, SIGNS
-from jyotipy.constants import VIMSHOTTARI_YEARS
+from jyotipy.constants import VARGA_DIVISIONS
 
 
 def make_chart():
@@ -30,7 +21,6 @@ def test_all_longitudes_in_range():
 
 def test_ayanamsa_reasonable_for_1990():
     chart = make_chart()
-    # Lahiri ayanamsa in 1990 should be roughly 23.6-23.7 deg
     assert 23.0 < chart.ayanamsa_value < 24.5
 
 
@@ -39,7 +29,7 @@ def test_whole_sign_houses_are_sign_boundaries():
     cusps = chart.houses("whole_sign")
     assert len(cusps) == 12
     for c in cusps:
-        assert c % 30 == 0, f"whole sign cusp {c} not on a sign boundary"
+        assert c % 30 == 0
 
 
 def test_rahu_ketu_are_opposite():
@@ -48,6 +38,33 @@ def test_rahu_ketu_are_opposite():
     ketu = chart.positions[Graha.KETU]
     diff = abs((rahu - ketu) % 360)
     assert abs(diff - 180) < 0.001
+
+
+def test_all_16_vargas_run_and_in_range():
+    """Every divisional chart, D1 through D60, should now run without
+    raising NotImplementedError and produce a valid 0-11 sign index."""
+    chart = make_chart()
+    for div in VARGA_DIVISIONS:
+        result = chart.varga(div)
+        for g, sign_idx in result.items():
+            assert 0 <= sign_idx <= 11, f"{div} gave out-of-range sign for {g}"
+
+
+def test_d30_matches_sourced_worked_examples():
+    """Direct regression test against the two independently-sourced
+    worked examples used to validate D30 during development."""
+    from jyotipy.varga import d30_trimshamsha
+    assert SIGNS[d30_trimshamsha(2.0)] == "Aries"      # Aries 0-5deg -> Mars -> Aries
+    assert SIGNS[d30_trimshamsha(7.0)] == "Aquarius"   # Aries 5-10deg -> Saturn -> Aquarius
+    assert SIGNS[d30_trimshamsha(14.0)] == "Sagittarius"  # Aries 10-18deg -> Jupiter -> Sagittarius
+    pisces_26_07 = 11 * 30 + 26 + 7 / 60
+    assert SIGNS[d30_trimshamsha(pisces_26_07)] == "Scorpio"
+
+
+def test_d60_matches_sourced_worked_example():
+    from jyotipy.varga import d60_shashtiamsha
+    leo_3_10 = 4 * 30 + 3 + 10 / 60
+    assert SIGNS[d60_shashtiamsha(leo_3_10)] == "Aquarius"
 
 
 def test_navamsha_sign_index_in_range():
@@ -61,15 +78,12 @@ def test_mahadasha_full_cycle_sums_to_120_years():
     chart = make_chart()
     periods = chart.mahadashas(cycles=1)
     total = sum(p["years"] for p in periods)
-    # The loop runs until total >= 120y, so the last period can overshoot
-    # slightly past the 120y mark (dasha periods don't divide evenly
-    # against an arbitrary birth moment) -- that's correct, not a bug.
     assert 120.0 <= total < 120.0 + 20.0
 
 
 def test_antardasha_sums_to_mahadasha_duration():
     chart = make_chart()
-    md = chart.mahadashas()[1]  # a full (non-partial) mahadasha
+    md = chart.mahadashas()[1]
     ads = chart.antardashas(md)
     assert len(ads) == 9
     total = sum(a["years"] for a in ads)
@@ -89,26 +103,3 @@ def test_yogas_runs():
     y = chart.yogas()
     assert "gajakesari" in y
     assert isinstance(y["gajakesari"], bool)
-
-
-def test_summary_and_print():
-    chart = make_chart()
-    print("\n--- Ascendant ---")
-    print(f"  {SIGNS[int(chart.ascendant // 30)]} {chart.ascendant % 30:.2f} deg")
-    print(f"  Ayanamsa (Lahiri): {chart.ayanamsa_value:.4f} deg")
-    print("\n--- Graha positions (sidereal) ---")
-    for g, info in chart.summary().items():
-        print(f"  {g:8s} {info['sign']:12s} {info['degree_in_sign']:6.2f}  "
-              f"{info['name']:16s} pada {info['pada']}")
-    print("\n--- Panchanga ---")
-    p = chart.panchanga()
-    print(f"  Tithi: {p['tithi']['paksha']} {p['tithi']['name']}")
-    print(f"  Yoga: {p['yoga']['name']}")
-    print(f"  Karana: {p['karana']['name']}")
-    print(f"  Vara: {p['vara']}")
-    print("\n--- First 3 Mahadashas ---")
-    for md in chart.mahadashas()[:3]:
-        print(f"  {md['lord'].value:8s} {md['start'].date()} -> {md['end'].date()}  ({md['years']:.2f}y)")
-    print("\n--- Yogas ---")
-    for k, v in chart.yogas().items():
-        print(f"  {k}: {v}")

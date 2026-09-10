@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "jyotipy"
-version = "0.1.0"
+version = "0.2.0"
 description = "Pure-Python Vedic (Jyotish) astrology library — sidereal charts, dashas, vargas, and yogas, with no C extensions."
 readme = { file = "README.md", content-type = "text/markdown" }
 requires-python = ">=3.8"

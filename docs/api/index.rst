@@ -15,3 +15,11 @@ API Reference
    panchanga
    constants
    utils
+   ashtakavarga
+   transit
+   shadbala
+   saptavargaja
+   kalabala
+   yuddhabala
+   drikbala
+   dashabhukti

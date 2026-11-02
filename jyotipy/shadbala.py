@@ -405,11 +405,18 @@ def full_shadbala_for_chart(natal_positions: dict, tropical_positions: dict,
         reports[loser]["kala_bala"]["total"] = round(reports[loser]["kala_bala"]["total"] - adjustment, 3)
 
         for p in (winner, loser):
-            reports[p]["missing_components"] = [m for m in reports[p]["missing_components"]
-                                                 if not m.startswith("yuddha_bala")]
             reports[p]["partial_total_virupas"] = round(
                 reports[p]["partial_total_virupas"] +
                 (adjustment if p == winner else -adjustment), 3)
-            reports[p]["warning"] = "Complete Shadbala total, including Yuddha Bala."
+
+    # Always clear the Yuddha-missing flag: even when no wars occur,
+    # full_shadbala_for_chart has fully resolved Yuddha (as zero adjustment).
+    for p in classical:
+        reports[p]["missing_components"] = [
+            m for m in reports[p]["missing_components"] if not m.startswith("yuddha_bala")
+        ]
+        if "yuddha_bala_adjustment" not in reports[p]["kala_bala"]:
+            reports[p]["kala_bala"]["yuddha_bala_adjustment"] = 0.0
+        reports[p]["warning"] = "Complete Shadbala total, including Yuddha Bala."
 
     return reports

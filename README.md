@@ -74,6 +74,7 @@ See [`CHANGELOG.md`](CHANGELOG.md) for the full list of what shipped in 0.2.
 | **Ashtakavarga**: Bhinnashtakavarga, Sarvashtakavarga, Trikona Sodhana, Ekadhipatya Sodhana | Done |
 | **Transit/Gochara**: good/bad houses from Moon, Vedha, Sade Sati, Ashtakavarga-qualified verdicts | Done |
 | **Shadbala: all six components** (Sthana, Dig, Kala, Chesta, Naisargika, Drik) | Done -- see Accuracy notes for two narrow open items |
+| **Compatibility (Guna Milan / Ashtakoot)** | Done (8 kootas, 36-point total) |
 
 ## Accuracy notes -- read this before using it for real work
 
@@ -88,9 +89,9 @@ See [`CHANGELOG.md`](CHANGELOG.md) for the full list of what shipped in 0.2.
 
 ## Roadmap
 
-1. Nadi astrology, Prashna (horary), Muhurta (electional), Varshaphal/Tajika (annual charts), Compatibility/Synastry (Guna Milan) -- none started yet
+11. Nadi astrology, Prashna (horary), Muhurta (electional), Varshaphal/Tajika (annual charts) -- none started yet
 2. A CLI for the library
-3. Full documentation coverage as new modules are added (currently up to date as of 0.2.0)
+3. Full documentation coverage as new modules are added (currently up to date as of 0.2.1)
 
 ## License
 

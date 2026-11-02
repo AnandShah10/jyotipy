@@ -52,9 +52,11 @@ def test_no_war_no_adjustment():
     inputs = _build_inputs(mars_lon=100.0, mercury_lon=150.0)  # far apart
     reports = full_shadbala_for_chart(**inputs)
 
-    assert "yuddha_bala_adjustment" not in reports[Graha.MARS]["kala_bala"]
-    assert "yuddha_bala_adjustment" not in reports[Graha.MERCURY]["kala_bala"]
-    assert any("yuddha_bala" in m for m in reports[Graha.MARS]["missing_components"])
+    # full_shadbala_for_chart always resolves Yuddha (zero when no war)
+    assert reports[Graha.MARS]["kala_bala"].get("yuddha_bala_adjustment") == 0.0
+    assert reports[Graha.MERCURY]["kala_bala"].get("yuddha_bala_adjustment") == 0.0
+    assert not any("yuddha_bala" in m for m in reports[Graha.MARS]["missing_components"])
+    assert reports[Graha.MARS]["warning"] == "Complete Shadbala total, including Yuddha Bala."
 
 
 def test_all_seven_planets_present_in_full_report():

@@ -11,6 +11,7 @@ ephemeris kernel downloads, works on Python 3.8 through 3.14.
    quickstart
    accuracy
    api/index
+   compatibility
 
 Indices
 =======

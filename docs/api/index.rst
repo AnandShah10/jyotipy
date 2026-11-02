@@ -23,3 +23,4 @@ API Reference
    yuddhabala
    drikbala
    dashabhukti
+   compatibility

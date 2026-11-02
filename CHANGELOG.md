@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.1
+
+### Added
+- **Compatibility / Guna Milan (Ashtakoot)**: full 8-koota matching (`guna_milan(bride_chart, groom_chart)`), with per-koota sourcing notes for Varna, Vashya, Tara, Yoni, Graha Maitri, Gana, Bhakoot, and Nadi. Traditional 36-point total; minimum recommended 18/36. (`compatibility.py`)
+
+### Fixed
+- **full_shadbala() reporting**: when no planetary war (Yuddha) is present, the method no longer left a misleading `missing_components` entry and "omits Yuddha Bala" warning. Yuddha is now always resolved (adjustment of 0.0 when no war), matching the method's documented contract of returning a complete, mutually-consistent Shadbala set.
+
 ## 0.2.0
 
 ### Added

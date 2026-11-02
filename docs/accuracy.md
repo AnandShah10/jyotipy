@@ -54,3 +54,25 @@ Vimshottari calculators (others use 365.2425 or a sidereal year). Over a
 120-year dasha cycle, different conventions can drift results by a few
 days. Check what convention a reference tool uses if you need
 bit-for-bit agreement with it.
+
+## Compatibility (Guna Milan)
+ 
+All eight kootas are implemented, but their sourcing confidence is not
+uniform -- this is the one feature where that variation is large enough to
+matter to how you read the result.
+ 
+Varna, Gana, Nadi, Bhakoot, Vashya, and Tara are each cross-validated against
+multiple independent sources (Nadi's assignment pattern against 17 individually
+confirmed data points with zero discrepancies; Gana against 7 spot-checks).
+ 
+Yoni's intermediate tiers (friendly / neutral / unfriendly, as opposed to the
+seven independently-corroborated hostile pairs) rest on a single source after a
+mistranslation correction, and Graha Maitri's point scale is a commonly-cited
+approximation rather than independently re-verified. Bhakoot implements only
+the single most universally-cited cancellation condition (shared sign lord).
+Tara scores position 1 as unfavourable per the mechanical formula, a deliberate
+simplification of the more nuanced classical theory.
+ 
+See {doc}`compatibility` for the full per-koota breakdown, and note that a
+total score is not a complete compatibility verdict -- Manglik dosha,
+seventh-house analysis, and Dasha compatibility are not implemented.

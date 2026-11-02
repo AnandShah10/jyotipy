@@ -69,3 +69,15 @@ chart = BirthChart(
     ayanamsa=AyanamsaSystem.KP_NEWCOMB,   # default is AyanamsaSystem.LAHIRI
 )
 ```
+
+## Compatibility / Guna Milan
+ 
+```python
+from jyotipy import BirthChart, guna_milan
+ 
+report = guna_milan(bride_chart, groom_chart)
+print(report["total_score"], "/", report["max_score"])
+```
+ 
+See {doc}`compatibility` for what each of the eight kootas means, how to read
+the result, and the confidence level of each underlying table.
